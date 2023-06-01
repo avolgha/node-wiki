@@ -1,0 +1,15 @@
+{
+  "name": "nwiki",
+  "version": "1.0.0",
+  "description": "browse the nodejs documentation through the terminal",
+	"type": "module",
+	"bin": "cli.js",
+  "scripts": {},
+  "author": "avolgha",
+  "license": "BSD-3 Clause Clear",
+  "dependencies": {
+    "@electron/asar": "^3.2.4",
+    "blessed": "^0.1.81",
+    "undici": "^5.22.1"
+  }
+}
