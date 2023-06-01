@@ -19,7 +19,7 @@ const box = blessed.box({
 let qListener;
 const q = (fn) => {
 	qListener = fn;
-	box.key("q", qListener);
+	screen.key("q", qListener);
 }
 function freeBox() {
 	box.children.forEach((child) => {
@@ -27,7 +27,7 @@ function freeBox() {
 	});
 
 	if (qListener) {
-		box.unkey("q", qListener);
+		screen.unkey("q", qListener);
 	}
 }
 
@@ -79,18 +79,20 @@ function renderVersionSelect() {
 	q(() => process.exit(0));
 
 	select.focus();
+	screen.render();
 }
 
 function renderDownloadVersion(version, thenFn) {
 	freeBox();
 	
-	const infoText = blessed.bigText({
+	const infoText = blessed.bigtext({
 		top: "center",
 		left: "center",
 		content: "{bold}downloading version...{/}",
 	});
 
 	box.append(infoText);
+	screen.render();
 
 	docs.downloadDocs(version, true).then((error) => {
 		if (error) {
@@ -137,24 +139,32 @@ function renderChooseFile(version) {
 	q(() => renderVersionSelect());
 	
 	select.focus();
+	screen.render();
 }
 
 export function renderFileContent(version, file) {
 	freeBox();
 
 	const content = docs.readDoc(version, file);
-	const text = blessed.text({ content });
+	const text = blessed.text({
+		alwaysScroll: true,
+		scrollable: true,
+		keys: true,
+		vi: true,
+		mouse: true,
+		content
+	});
 
 	box.append(text);
 
 	q(() => renderChooseFile(version));
 
 	text.focus();
+	screen.render();
 }
 
 renderVersionSelect();
 screen.append(box);
 
 screen.key(["escape"], () => process.exit(0));
-
 screen.render();

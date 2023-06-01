@@ -39,7 +39,7 @@ export async function downloadDocs(version, force = false) {
 	}
 
 	const body = await response.body.text();
-	fs.writeFileSync(path, body);
+	fs.writeFileSync(fpath, body);
 
 	return null;
 }
@@ -69,6 +69,10 @@ export function readDoc(version, file) {
 		return null;
 	}
 
+	if (file.startsWith("/")) {
+		file = file.substring(1);
+	}
+	
 	const content = asar.extractFile(getDocPath(version), file);
 	return content.toString();
 }
